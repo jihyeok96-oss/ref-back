@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="header" class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand"
+           href="/">
+            Logic Project
+        </a>
+        <a class="nav-link" href="/qna" style="margin-right:16px; color:#fff" th:if="${session.loginMember != null}">Q&A</a>
+        <a class="nav-link" href="/qna/new" style="margin-right:16px; color: #fff" th:if="${session.loginMember != null}">질문 작성</a>
+        <a class="nav-link" href="/files" style="margin-right:16px; color: #fff" th:if="${session.loginMember != null}">자료실</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse"
+             id="navbarMenu">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"
+                    th:if="${session.loginMember != null}">
+                    <a class="nav-link"
+                       href="/member/mypage">
+                        마이페이지
+                    </a>
+                </li>
+                <li class="nav-item"
+                    th:if="${session.loginMember != null
+                    and session.loginMember.role.name() == 'ADMIN'}">
+                    <a class="nav-link"
+                       href="/admin/">
+                        회원관리
+                    </a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <a href="/member/login"
+                   class="btn btn-outline-light me-2"
+                   th:if="${session.loginMember == null}">
+                    로그인
+                </a>
+                <a href="/member/terms"
+                   class="btn btn-primary"
+                   th:if="${session.loginMember == null}">
+                    회원가입
+                </a>
+                <span class="navbar-text text-white me-3"
+                      th:if="${session.loginMember != null}">
+                    <strong th:text="${session.loginMember.name}">
+                        홍길동
+                    </strong>
+                    님
+                </span>
+                <a href="/member/logout"
+                   class="btn btn-outline-light"
+                   th:if="${session.loginMember != null}">
+                    로그아웃
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

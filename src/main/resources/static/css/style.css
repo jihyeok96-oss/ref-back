@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.table th {
+    vertical-align: middle;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.terms-box {
+    height: 180px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.btn {
+    border-radius: 6px;
+}

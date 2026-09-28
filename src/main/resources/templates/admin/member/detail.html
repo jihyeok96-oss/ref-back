@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>회원 상세</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            회원 상세
+        </h2>
+        <a href="/admin/members" class="btn btn-secondary">
+            목록
+        </a>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th width="200">회원번호</th>
+                    <td th:text="${member.id}"></td>
+                </tr>
+                <tr>
+                    <th>아이디</th>
+                    <td th:text="${member.loginId}"></td>
+                </tr>
+                <tr>
+                    <th>이름</th>
+                    <td th:text="${member.name}"></td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td th:text="${member.email}"></td>
+                </tr>
+                <tr>
+                    <th>권한</th>
+                    <td th:text="${member.role}"></td>
+                </tr>
+                <tr>
+                    <th>상태</th>
+                    <td>
+                        <span class="badge bg-success"
+                              th:if="${member.status.name() == 'ACTIVE'}">
+                            ACTIVE
+                        </span>
+                        <span class="badge bg-secondary"
+                              th:if="${member.status.name() == 'INACTIVE'}">
+                            INACTIVE
+                        </span>
+                        <span class="badge bg-danger"
+                              th:if="${member.status.name() == 'KICKED'}">
+                            KICKED
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>이용약관 동의</th>
+                    <td>
+                        <span th:if="${member.termsAgreed}"
+                              class="text-success">
+                            동의
+                        </span>
+                        <span th:unless="${member.termsAgreed}"
+                              class="text-danger">
+                            미동의
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>개인정보 동의</th>
+                    <td>
+                        <span th:if="${member.privacyAgreed}"
+                              class="text-success">
+                            동의
+                        </span>
+                        <span th:unless="${member.privacyAgreed}"
+                              class="text-danger">
+                            미동의
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>가입일</th>
+                    <td th:text="${member.createdAt}"></td>
+                </tr>
+            </table>
+            <hr>
+            <div class="d-flex gap-2">
+                <!-- 활성화 -->
+                <form th:if="${member.status.name() != 'ACTIVE'}"
+                      th:action="@{/admin/members/{id}/activate(id=${member.id})}"
+                      method="post">
+                    <button type="submit"
+                            class="btn btn-success">
+                        회원 활성화
+                    </button>
+                </form>
+                <!-- 비활성화 -->
+                <form th:if="${member.status.name() == 'ACTIVE'
+                              and member.role.name() != 'ADMIN'}"
+                      th:action="@{/admin/members/{id}/deactivate(id=${member.id})}"
+                      method="post">
+                    <button type="submit"
+                            class="btn btn-warning">
+                        회원 비활성화
+                    </button>
+                </form>
+                <!-- 강퇴 -->
+                <form th:if="${member.role.name() != 'ADMIN'
+                              and member.status.name() != 'KICKED'}"
+                      th:action="@{/admin/members/{id}/kick(id=${member.id})}"
+                      method="post">
+                    <button type="submit"
+                            class="btn btn-danger"
+                            onclick="return confirm('정말 이 회원을 강퇴하시겠습니까?');">
+                        회원 강퇴
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
